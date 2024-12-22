@@ -124,7 +124,7 @@ export default function ClassSection() {
             if (
               !checkValidClass(
                 { ...classroomUpdate, id } as Classroom,
-                Object.values(classes)
+                Object.values(classes).filter((c) => c.id !== id)
               )
             ) {
               toast({

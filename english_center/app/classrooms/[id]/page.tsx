@@ -35,6 +35,9 @@ import { useCourseStore } from '@/features/courses/hooks';
 import { useStudentStore } from '@/features/students/hooks';
 import { useTeacherStore } from '@/features/teachers/hooks';
 import { classDays, classStatuses } from '@/lib/options';
+import { checkValidClass } from '@/lib/utils';
+import { Classroom } from '@/features/classroom/types';
+import { toast } from '@/hooks/use-toast';
 
 export default function ClassroomInfo() {
   const { id } = useParams<{ id: string }>();
@@ -134,6 +137,19 @@ export default function ClassroomInfo() {
         <ClassroomEditor
           classroom={classroom}
           onSave={(dataUpdate) => {
+            if (
+              !checkValidClass(
+                { ...dataUpdate, id } as Classroom,
+                Object.values(classes).filter((c) => c.id !== id)
+              )
+            ) {
+              toast({
+                title: 'Invalid class',
+                description: 'The class schedule conflicts with another class',
+                variant: 'destructive',
+              });
+              return;
+            }
             updateClass(id, dataUpdate);
             setEditClassInfo(false);
           }}
