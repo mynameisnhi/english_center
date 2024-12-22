@@ -48,5 +48,5 @@ export class Classroom extends Model<IClassroom, IClassroomCreate> {
   students: string[];
 
   @Column(DataType.JSON)
-  completedSyllabus: Record<string, boolean>;
+  completedSyallbus: Record<string, boolean>;
 }

@@ -12,7 +12,7 @@ export type Courses = {
 
 export type CourseSyllabus = {
   course: string;
-  syllabus: {
+  styllabus: {
     id: string;
     week: number;
     description: string;

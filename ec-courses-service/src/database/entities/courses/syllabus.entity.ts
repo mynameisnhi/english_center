@@ -26,7 +26,7 @@ export class CourseSyllabus extends Model<
   course: string;
 
   @Column(DataType.JSON)
-  syllabus: {
+  styllabus: {
     id: string;
     week: number;
     description: string;

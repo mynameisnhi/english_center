@@ -18,7 +18,7 @@ export interface IClassroom {
     };
   };
   students?: string[];
-  completedSyllabus?: Record<string, boolean>;
+  completedSyallbus?: Record<string, boolean>;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -77,7 +77,7 @@ export default function CourseInfo() {
     if (!syllabusData) return null;
     return {
       ...syllabusData,
-      syllabus: _.sortBy(syllabusData.syllabus, 'week'),
+      syllabus: _.sortBy(syllabusData.styllabus, 'week'),
     };
   }, [syllabus]);
 
@@ -117,12 +117,12 @@ export default function CourseInfo() {
     }
     if (courseSyllabus) {
       updateSyllabus(id, {
-        syllabus: currentSyllabus,
+        styllabus: currentSyllabus,
       });
     } else {
       createSyllabus({
         course: id as string,
-        syllabus: currentSyllabus,
+        styllabus: currentSyllabus,
       });
     }
     setEditSyllabus(undefined);
@@ -232,7 +232,7 @@ export default function CourseInfo() {
                             (v, i) => i !== index
                           );
                           updateSyllabus(id, {
-                            syllabus: newSyllabus,
+                            styllabus: newSyllabus,
                           });
                         }}
                       />

@@ -4,7 +4,7 @@ import { classroomsService } from '@/services';
 
 import { Classroom } from './types';
 
-export const getClassrooms = async (): Promise<Classroom[]> => {
+export const getClassroomes = async (): Promise<Classroom[]> => {
   try {
     const result = await classroomsService.get<Classroom[]>('');
     if (result.kind === 'ok') {
