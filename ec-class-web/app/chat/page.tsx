@@ -1,5 +1,6 @@
 'use client';
 
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Send } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
@@ -21,11 +22,15 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import Waiting from '@/components/Waiting';
 import { useCourseStore } from '@/features/courses/hooks';
 
-import { createMessage, Message } from '../../lib/ai';
+import { getPromt, Message } from '../../lib/ai';
+
+const genAI = new GoogleGenerativeAI('AIzaSyAO_aTVZOjaHD_bQSBgEi9znWrUOesf9ds');
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 export default function AIChat() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+
   const { courses, handling, getCourses } = useCourseStore(
     useShallow((state) => ({
       handling: state.handling,
@@ -40,7 +45,16 @@ export default function AIChat() {
     }
   }, []);
 
-  const courseArr = useMemo(() => Object.values(courses || {}), [courses]);
+  const chat = useMemo(() => {
+    return model.startChat({
+      history: [
+        {
+          role: 'user',
+          parts: [{ text: getPromt(Object.values(courses || {})) }],
+        },
+      ],
+    });
+  }, []);
 
   const handleSubmit = async () => {
     setMessages([
@@ -49,15 +63,22 @@ export default function AIChat() {
       { content: 'Typing...', role: 'system' },
     ]);
     setInput('');
-    createMessage(input, messages, courseArr).then((result) => {
-      const { promt, ...mes } = result;
-      const newMessages: Message[] = [
-        ...messages,
-        { content: input, role: 'user', promt },
-        mes,
-      ];
-      setMessages(newMessages);
-    });
+    // createMessage(input, messages, courseArr).then((result) => {
+    //   const { promt, ...mes } = result;
+    //   const newMessages: Message[] = [
+    //     ...messages,
+    //     { content: input, role: 'user', promt },
+    //     mes,
+    //   ];
+    //   setMessages(newMessages);
+    // });
+    const result = await chat.sendMessage(input);
+    const newMessages: Message[] = [
+      ...messages,
+      { content: input, role: 'user' },
+      { content: result.response.text(), role: 'assistant' },
+    ];
+    setMessages(newMessages);
   };
 
   return (
