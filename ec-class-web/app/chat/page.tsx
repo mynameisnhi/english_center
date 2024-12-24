@@ -24,7 +24,7 @@ import { useCourseStore } from '@/features/courses/hooks';
 
 import { getPromt, Message } from '../../lib/ai';
 
-const genAI = new GoogleGenerativeAI('AIzaSyAO_aTVZOjaHD_bQSBgEi9znWrUOesf9ds');
+const genAI = new GoogleGenerativeAI('');
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 export default function AIChat() {
